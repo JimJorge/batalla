@@ -70,7 +70,7 @@
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="{{route('usuario.registro')}}">Crear cuenta</a>
+                                    <a class="small" href="{{route('registro')}}">Crear cuenta</a>
                                 </div>
                             </div>
                         </div>

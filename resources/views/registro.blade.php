@@ -41,7 +41,7 @@
                                 <label class="text-danger">{{$estatus}}</label>
                             @endif
                         </label>
-                        <form class="user" method="post" action="{{route('usuario.registro.form')}}">
+                        <form class="user" method="post" action="{{route('registro.form')}}">
                             {{csrf_field()}}
                             <div class="form-group">
                                 <input type="email" class="form-control form-control-user" id="exampleInputEmail"
@@ -62,7 +62,7 @@
                         </form>
                         <hr>
                         <div class="text-center">
-                            <a class="small" href="login.html">¿Tienes una cuenta? ¡Inicia Sesión!</a>
+                            <a class="small" href="{{route('login')}}">¿Tienes una cuenta? ¡Inicia Sesión!</a>
                         </div>
                     </div>
                 </div>

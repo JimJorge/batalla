@@ -35,7 +35,7 @@
         <header id="header">
             <h1>Bienvenido a Batalla Naval</h1>
             <p style="margin-bottom: 5%;">Divertido&nbsp;&bull;&nbsp; Programación &nbsp;&bull;&nbsp; Mi primer vista en Laravel</p>
-            <a href="{{route('usuario.login')}}" class="boton_personalizado" href="#">¡Comenzar!</a>
+            <a href="{{route('login')}}" class="boton_personalizado" href="#">¡Comenzar!</a>
             <nav style="margin-top: 5%;">
                 <ul>
                     <li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>

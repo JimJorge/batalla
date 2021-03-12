@@ -14,14 +14,18 @@ use App\Http\Controllers\UsuarioController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('usuario.bienvenida');
+    return redirect()->route('bienvenida');
 });
 
-Route::prefix('/usuario')->group(function (){
-    Route::get('/bienvenida',[UsuarioController::class,'bienvenida'])->name('usuario.bienvenida');
-    Route::get('/login',[UsuarioController::class,'login'])->name('usuario.login');
-    Route::get('/registro',[UsuarioController::class,'registro'])->name('usuario.registro');
-    Route::post('/registro',[UsuarioController::class,'registroForm'])->name('usuario.registro.form');
+Route::get('/bienvenida',[UsuarioController::class,'bienvenida'])->name('bienvenida');
+Route::get('/login',[UsuarioController::class,'login'])->name('login');
+Route::get('/registro',[UsuarioController::class,'registro'])->name('registro');
+Route::post('/registro',[UsuarioController::class,'registroForm'])->name('registro.form');
+
+Route::get('/ok',function (){
+    return view('test');
+});
+Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::get('/menu',[UsuarioController::class,'menu'])->name('usuario.menu');
     Route::get('/nombre/{v}', [UsuarioController::class,'crear']);
     Route::get('/crear',[UsuarioController::class,'crear']);
