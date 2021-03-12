@@ -19,7 +19,29 @@
     <div class="row">
 
         <!-- Second Column -->
-        <div class="col-lg-3">
+        <div class="col-lg-3 offset-1">
+
+            <!-- Background Gradient Utilities -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Tablero jugador: {{session('usuario')->correo}}</h6>
+                </div>
+                <div class="card-body">
+                    <div class="px-3 py-3 bg-gradient-danger text-white">.bg-gradient-danger</div>
+                    <div class="px-3 py-3 bg-gradient-dark text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-danger text-white">.bg-gradient-danger</div>
+                    <div class="px-3 py-3 bg-gradient-dark text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-success text-white">.bg-gradient-dark</div>
+                </div>
+            </div>
+        </div>
+        <!-- Second Column -->
+        <div class="col-lg-3 offset-3">
 
             <!-- Background Gradient Utilities -->
             <div class="card shadow mb-4">
@@ -32,6 +54,12 @@
                     <div class="px-3 py-3 bg-gradient-dark text-white">.bg-gradient-dark</div>
                     <div class="px-3 py-3 bg-gradient-danger text-white">.bg-gradient-danger</div>
                     <div class="px-3 py-3 bg-gradient-dark text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
+                    <div class="px-3 py-3 bg-gradient-primary text-white">.bg-gradient-dark</div>
                 </div>
             </div>
         </div>

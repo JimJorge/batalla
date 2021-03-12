@@ -129,6 +129,13 @@ class UsuarioController extends Controller
 
     }
 
+    public function cerrarSesion(){
+        if(Session::has('usuario'))
+            Session::forget('usuario');
+
+        return redirect()->route('cerrar.sesion');
+    }
+
     public function saludo(){
         echo "Ya rifaste";
     }
