@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class UsuarioController extends Controller
 {
@@ -81,6 +83,13 @@ class UsuarioController extends Controller
     }
 
     public function registroForm(Request $datos){
+        if(!$datos->correo || !$datos->password1 || !$datos->pasword2)
+            return view("registo",["estatus"=> "error", "mensaje"=> "¡El correo no esta registrado!"]);
+
+        $usuario = Usuario::where('correo',$datos->correo)->first();
+        if($usuario)
+            return view("registo",["estatus"=> "error", "mensaje"=> "¡El correo ya se encuentra registrado!"]);
+
         $correo = $datos->correo;
         $password2 = $datos->password2;
         $password1 = $datos->password1;
@@ -95,5 +104,32 @@ class UsuarioController extends Controller
         $usuario->save();
             return view("login",["estatus"=> "success", "mensaje"=> "¡Cuenta Creada!"]);
 
+    }
+
+    public function verificarCredenciales(Request $datos){
+
+        if(!$datos->correo || !$datos->password)
+            return view("login",["estatus"=> "error", "mensaje"=> "¡Completa los campos!"]);
+
+        $usuario = Usuario::where("correo",$datos->correo)->first();
+        if(!$usuario)
+            return view("login",["estatus"=> "error", "mensaje"=> "¡El correo no esta registrado!"]);
+
+        if(!Hash::check($datos->password,$usuario->password))
+            return view("login",["estatus"=> "error", "mensaje"=> "¡Datos incorrectos!"]);
+
+        Session::put('usuario',$usuario);
+
+        if(isset($datos->url)){
+            $url = decrypt($datos->url);
+            return redirect($url);
+        }else{
+            return redirect()->route('usuario.menu');
+        }
+
+    }
+
+    public function saludo(){
+        echo "Ya rifaste";
     }
 }

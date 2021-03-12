@@ -44,17 +44,20 @@
                                 @if(isset($estatus))
                                     @if($estatus == "success")
                                         <label class="text-success">{{$mensaje}}</label>
+                                    @elseif($estatus == "error")
+                                        <label class="text-warning">{{$mensaje}}</label>
                                     @endif
                                 @endif
-                                <form class="user">
+                                <form class="user" action="{{route('login.form')}}" method="post">
+                                    {{csrf_field()}}
                                     <div class="form-group">
                                         <input type="email" class="form-control form-control-user"
                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                               placeholder="Enter Email Address...">
+                                               placeholder="Escribe tu correo" name="correo" required>
                                     </div>
                                     <div class="form-group">
                                         <input type="password" class="form-control form-control-user"
-                                               id="exampleInputPassword" placeholder="Password">
+                                               id="exampleInputPassword" placeholder="Password" name="password" required>
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
@@ -63,10 +66,11 @@
                                                 Me</label>
                                         </div>
                                     </div>
-                                    <a href="index.html" class="btn btn-primary btn-user btn-block">
-                                        Login
-                                    </a>
+                                    <input type="submit" value="Iniciar" class="btn btn-primary btn-user btn-block">
                                     <hr>
+                                    @if(isset($_GET["r"]))
+                                        <input type="hidden" name="url" value="{{$_GET["r"]}}">
+                                    @endif
                                 </form>
                                 <hr>
                                 <div class="text-center">

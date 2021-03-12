@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::get('/bienvenida',[UsuarioController::class,'bienvenida'])->name('bienvenida');
 Route::get('/login',[UsuarioController::class,'login'])->name('login');
+Route::post('/login',[UsuarioController::class,'verificarCredenciales'])->name('login.form');
 Route::get('/registro',[UsuarioController::class,'registro'])->name('registro');
 Route::post('/registro',[UsuarioController::class,'registroForm'])->name('registro.form');
 
@@ -28,7 +29,7 @@ Route::get('/ok',function (){
 Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::get('/menu',[UsuarioController::class,'menu'])->name('usuario.menu');
     Route::get('/nombre/{v}', [UsuarioController::class,'crear']);
-    Route::get('/crear',[UsuarioController::class,'crear']);
+    Route::get('/crear',[UsuarioController::class,'saludo']);
 });
 
 
