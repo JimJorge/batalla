@@ -24,13 +24,17 @@ Route::get('/cerrarSesion',[UsuarioController::class,'cerrarSesion'])->name('cer
 Route::get('/registro',[UsuarioController::class,'registro'])->name('registro');
 Route::post('/registro',[UsuarioController::class,'registroForm'])->name('registro.form');
 
-Route::get('/ok',function (){
-    return view('test');
-});
+
 Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::get('/menu',[UsuarioController::class,'menu'])->name('usuario.menu');
     Route::get('/nombre/{v}', [UsuarioController::class,'crear']);
     Route::get('/crear',[UsuarioController::class,'saludo']);
+    Route::get('/crear/tablero',[UsuarioController::class,'creartablero']);
+    Route::get('/crear/codigo/tablero',[UsuarioController::class,'crearCodigotablero'])->name('usuario.crear.tablero.codigo');
+    Route::get('/peticion',[UsuarioController::class,'peticion'])->name('usuario.peticion');
+    Route::get('/ok',function (){
+        return view('test');
+    });
 });
 
 

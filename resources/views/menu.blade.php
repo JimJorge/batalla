@@ -9,7 +9,7 @@
 @endsection
 
 @section('titulo-pagina')
-    <h1 class="h3 mb-4 text-gray-800">Saludando Ando</h1>
+    <h1 class="h3 mb-4 text-gray-800">{{session('usuario')->correo}}</h1>
 @endsection
 
 @section('contenido')

@@ -38,7 +38,7 @@
                         </div>
                         <label class="text-danger">
                             @if(isset($estatus))
-                                <label class="text-danger">{{$estatus}}</label>
+                                <label class="text-danger">{{$mensaje}}</label>
                             @endif
                         </label>
                         <form class="user" method="post" action="{{route('registro.form')}}">

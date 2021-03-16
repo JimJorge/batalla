@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Herramienta;
+use App\Models\Tablero;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -83,8 +85,9 @@ class UsuarioController extends Controller
     }
 
     public function registroForm(Request $datos){
+
         if(!$datos->correo || !$datos->password1 || !$datos->pasword2)
-            return view("registo",["estatus"=> "error", "mensaje"=> "¡El correo no esta registrado!"]);
+            return view("registo",["estatus"=> "error", "mensaje"=> "¡Falta información!"]);
 
         $usuario = Usuario::where('correo',$datos->correo)->first();
         if($usuario)
@@ -139,4 +142,26 @@ class UsuarioController extends Controller
     public function saludo(){
         echo "Ya rifaste";
     }
+
+    public function peticion(){
+        echo json_encode(["ok" => ":D"]);
+    }
+
+    public function creartablero(){
+        return view('crear-tablero');
+    }
+    public function crearCodigotablero(){
+        // -- :D
+        $verificar = 1;
+        do{
+            $codigo = Herramienta::crearCodigo(5);
+            $tablero = Tablero::where('codigo',$codigo)->first();
+            if (!$tablero)
+                $verificar = 0;
+
+        }while( $verificar == 1);
+
+        echo json_encode(["estatus" => "success", "codigo" => $codigo]);
+    }
+
 }

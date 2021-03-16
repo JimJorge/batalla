@@ -17,6 +17,7 @@
 
     <!-- Custom styles for this template-->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('css')
 
 </head>
