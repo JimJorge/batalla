@@ -151,6 +151,19 @@ class UsuarioController extends Controller
         return view('crear-tablero');
     }
 
+    public function misTableros (){
+        $tableros = Tablero::where('usuario1_id',session('usuario')->id)->get();
+        foreach ($tableros as $tablero){
+            $usuario1 = Usuario::find($tablero->usuario1_id);
+            $usuario2 = Usuario::find($tablero->usuario2_id);
+            $ganador = Usuario::find($tablero->ganador_id);
+            $tablero->correoUsuario1 = $usuario1->correo;
+            $tablero->correoUsuario2 = $usuario2->correo;
+            $tablero->ganador = $ganador->correo;
+        }
+        return view('mistableros',["tableros" => $tableros]);
+    }
+
 
 
 }

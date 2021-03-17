@@ -34,6 +34,7 @@ Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::post('/crear/tablero',[TableroController::class,'crearTablero'])->name('usuario.registrar.tablero');
     Route::get('/crear/codigo/tablero',[TableroController::class,'crearCodigotablero'])->name('usuario.crear.tablero.codigo');
     Route::get('/peticion',[UsuarioController::class,'peticion'])->name('usuario.peticion');
+    Route::get('/mistableros',[UsuarioController::class,'misTableros'])->name('usuario.mistableros');
     Route::get('/ok',function (){
         return view('test');
     });

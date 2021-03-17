@@ -14,6 +14,7 @@
 </style>
 @section('titulo-pagina')
     <h1 class="h3 mb-4 text-gray-800">Tablero #{{$tablero->codigo}}</h1>
+    Creado: {{$tablero->created_at}}
     <p class="mb-4">Instrucciones de juego
     </p>
 
