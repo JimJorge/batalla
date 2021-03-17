@@ -66,7 +66,8 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Informaicón:</h6>
-                    <a class="collapse-item" href="buttons.html">Crear Tablero</a>
+                    <a class="collapse-item" href="{{route('usuario.crear.tablero')}}">Crear Tablero</a>
+                    <a class="collapse-item" href="{{route('usuario.crear.tablero')}}">Mis tablero</a>
                     <a class="collapse-item" href="cards.html">Historial de juegos</a>
                 </div>
             </div>

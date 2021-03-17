@@ -147,21 +147,10 @@ class UsuarioController extends Controller
         echo json_encode(["ok" => ":D"]);
     }
 
-    public function creartablero(){
+    public function crearTablero(){
         return view('crear-tablero');
     }
-    public function crearCodigotablero(){
-        // -- :D
-        $verificar = 1;
-        do{
-            $codigo = Herramienta::crearCodigo(5);
-            $tablero = Tablero::where('codigo',$codigo)->first();
-            if (!$tablero)
-                $verificar = 0;
 
-        }while( $verificar == 1);
 
-        echo json_encode(["estatus" => "success", "codigo" => $codigo]);
-    }
 
 }

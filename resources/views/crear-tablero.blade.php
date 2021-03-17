@@ -19,7 +19,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">Tablero</h6>
             </div>
             <div class="card-body">
-                <form class="user" id="form-registrar" method="post" action="{{route('registro.form')}}">
+                <form class="user" id="form-registrar" method="post" action="{{route('usuario.registrar.tablero')}}">
                     {{csrf_field()}}
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">

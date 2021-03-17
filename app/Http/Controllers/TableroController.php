@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Herramienta;
 use App\Models\Tablero;
 use Illuminate\Http\Request;
 
 class TableroController extends Controller
 {
     // Crear Tablero
-    public function crearTablero (){
+    public function crearTablero (Request $request){
         $tablero = new Tablero();
-        $tablero->codigo = "";
-        $tablero->usuario1_id = "";
-        $tablero->usuario2_id = "";
-        $tablero->estatus = "";
-        $tablero->ganador_id = "";
+        $tablero->codigo = $request->codigo;
+        $tablero->usuario1_id = $request->idUsuario;
+        $tablero->usuario2_id = $request->idUsuario;
+        $tablero->estatus = "nuevo";
+        $tablero->ganador_id = $request->idUsuario;
         $verificar = $tablero->save();
         if($verificar){
-            echo json_encode(["estatus" => "success"]);
+            return redirect()->route('usuario.detalle.tablero',['codigo' => $tablero->codigo]);
         }else{
             echo json_encode(["estatus" => "error"]);
         }
@@ -67,6 +68,30 @@ class TableroController extends Controller
             echo json_encode(["estatus" => "success","tablero" => $tableros]);
         else
             echo json_encode(["estatus" => "error"]);
+
+    }
+
+    public function crearCodigotablero(){
+        // -- :D
+        $verificar = 1;
+        do{
+            $codigo = Herramienta::crearCodigo(5);
+            $tablero = Tablero::where('codigo',$codigo)->first();
+            if (!$tablero)
+                $verificar = 0;
+
+        }while( $verificar == 1);
+
+        echo json_encode(["estatus" => "success", "codigo" => $codigo]);
+    }
+
+    public function detalleTablero($codigo){
+        $tablero = Tablero::where('codigo',$codigo)->first();
+        if(!$tablero){
+            return redirect()->route('usuario.menu');
+        }
+
+        return view("tablero",["tablero" => $tablero]);
 
     }
 }
