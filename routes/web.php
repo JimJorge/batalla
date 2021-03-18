@@ -36,6 +36,7 @@ Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::get('/peticion',[UsuarioController::class,'peticion'])->name('usuario.peticion');
     Route::get('/mistableros',[UsuarioController::class,'misTableros'])->name('usuario.mistableros');
     Route::get('/tableros',[UsuarioController::class,'tableros'])->name('usuario.tableros');
+    Route::get('/historial',[UsuarioController::class,'historial'])->name('usuario.historial');
 
 });
 

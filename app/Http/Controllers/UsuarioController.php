@@ -173,6 +173,18 @@ class UsuarioController extends Controller
         return view("tableros",["tableros" => $tableros]);
     }
 
+    public function historial(){
+        $tableros = Tablero::where('estatus','concluido')->where('usuario1_id',session('usuario')->id)->get();
+        foreach ($tableros as $tablero) {
+            $usuario = Usuario::find($tablero->usuario1_id);
+            $usuario2 = Usuario::find($tablero->usuario2_id);
+            $tablero->nombreJugador = $usuario->correo;
+            $tablero->nombreJugador2 = $usuario2->correo;
+        }
+        return view('historial',["tableros" => $tableros]);
+
+    }
+
 
 
 }
