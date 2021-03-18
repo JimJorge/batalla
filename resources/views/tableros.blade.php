@@ -9,19 +9,19 @@
 @endsection
 
 @section('titulo-pagina')
-    <h1 class="h3 mb-4 text-gray-800">Mis tableros</h1>
+    <h1 class="h3 mb-4 text-gray-800">Tableros Nuevos</h1>
 @endsection
 
 @section('contenido')
     <div class="col-md-12">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Tablero</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Tableros Nuevos</h6>
             </div>
             <div class="card-body">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">A continuación se muestra información sibre tus tableros creados</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">A continuación se muestra todos los tableros disponibles para jugar.</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -32,10 +32,8 @@
                                     <th>Codigo</th>
                                     <th>Estatus</th>
                                     <th>Jugador 1</th>
-                                    <th>Jugador 2</th>
-                                    <th>Ganador</th>
                                     <th>Creado</th>
-                                    <th>Detalles</th>
+                                    <th>JUGAR</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -44,10 +42,8 @@
                                     <th>Codigo</th>
                                     <th>Estatus</th>
                                     <th>Jugador 1</th>
-                                    <th>Jugador 2</th>
-                                    <th>Ganador</th>
                                     <th>Creado</th>
-                                    <th>Detalles</th>
+                                    <th>JUGAR</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -57,10 +53,15 @@
                                         <td>{{$tablero->codigo}}</td>
                                         <td>{{$tablero->estatus}}</td>
                                         <td>{{$tablero->correoUsuario1}}</td>
-                                        <td>{{$tablero->correoUsuario2}}</td>
-                                        <td>{{$tablero->ganador}}</td>
                                         <td>{{$tablero->created_at}}</td>
-                                        <td><a href="{{route('usuario.detalle.tablero',["codigo" => $tablero->codigo])}}" class="btn-dark">Detalles</a></td>
+                                        <td>
+                                            <a href="{{route('usuario.detalle.tablero',["codigo" => $tablero->codigo])}}" class="btn btn-success btn-icon-split">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-gamepad"></i>
+                                                </span>
+                                                <span class="text">JUGAR</span>
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
 

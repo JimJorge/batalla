@@ -86,12 +86,12 @@ class UsuarioController extends Controller
 
     public function registroForm(Request $datos){
 
-        if(!$datos->correo || !$datos->password1 || !$datos->pasword2)
-            return view("registo",["estatus"=> "error", "mensaje"=> "¡Falta información!"]);
+        if(!$datos->correo || !$datos->password1 || !$datos->password2)
+            return view("registro",["estatus"=> "error", "mensaje"=> "¡Falta información!"]);
 
         $usuario = Usuario::where('correo',$datos->correo)->first();
         if($usuario)
-            return view("registo",["estatus"=> "error", "mensaje"=> "¡El correo ya se encuentra registrado!"]);
+            return view("registro",["estatus"=> "error", "mensaje"=> "¡El correo ya se encuentra registrado!"]);
 
         $correo = $datos->correo;
         $password2 = $datos->password2;
@@ -162,6 +162,15 @@ class UsuarioController extends Controller
             $tablero->ganador = $ganador->correo;
         }
         return view('mistableros',["tableros" => $tableros]);
+    }
+
+    public function tableros (){
+        $tableros = Tablero::where("estatus","nuevo")->get();
+        foreach ($tableros as $tablero){
+            $usuario1 = Usuario::find($tablero->usuario1_id);
+            $tablero->correoUsuario1 = $usuario1->correo;
+        }
+        return view("tableros",["tableros" => $tableros]);
     }
 
 

@@ -75,9 +75,9 @@
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{{route('usuario.tableros')}}">
                 <i class="fas fa-fw fa-gamepad"></i>
-                <span>Otros Tableros</span>
+                <span>Tableros Nuevos</span>
             </a>
         </li>
 
