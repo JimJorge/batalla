@@ -20,29 +20,39 @@
 
     <!-- Content Row -->
     <div class="row">
-
+        <input type="hidden" id="usuario-id" value="{{session('usuario')->id}}">
         <!-- Second Column -->
         <div class="col-lg-4 offset-1">
 
             <!-- Background Gradient Utilities -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Tablero de: {{session('usuario')->correo}}
-                    </h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Tablero de: {{session('usuario')->correo}}</h6>
+                    @if(!isset($tableroBarco))
+                        <label style="margin-top: 5%;" class="text-info">Cantidad de Barcos: <b id="cantidadBarcos">3</b></label>
+                        <input type="hidden" id="barcos-listos" value="0">
+                    @else
+                        <input type="hidden" id="barcos-listos" value="1">
+                    @endif
                 </div>
-                <div class="card-body">
-                    <button valorBarco="1" class="barco btn-barco px-2 py-3 bg-gradient-danger text-white">.bg-gradient-dark</button>
-                    <button valorBarco="2" class="barco btn-barco px-2 py-3 bg-gradient-dark text-white">.bg-gradient-dark</button>
-                    <button valorBarco="3" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="4" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="5" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="6" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="7" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="8" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="9" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="10" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="11" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarco="12" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
+                <div class="card-body text-center">
+                    @for($x = 1; $x <= 12; $x++)
+                        @if(isset($tableroBarco))
+                            @if($tableroBarco->barco1 == $x || $tableroBarco->barco2 == $x || $tableroBarco->barco3 == $x)
+                                <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-success text-white">Barco {{$x}}</button>
+                            @else
+                                <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                            @endif
+                        @else
+                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                        @endif
+                    @endfor
+                    <hr>
+                        @if(!isset($tableroBarco))
+                            <button class="bg-gradient-info form-control text-white" id="jugador-1-listo">¡Estoy listo!</button>
+                        @elseif(!isset($tableroBarco2))
+                            <button class="bg-gradient-info form-control text-white" id="buscar-enemigo">¡BUSCAR ENEMIGO!</button>
+                        @endif
                 </div>
             </div>
         </div>
@@ -53,24 +63,38 @@
             <!-- Background Gradient Utilities -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Tablero de jugador: <b>hola</b>
-                    </h6>
+                    @if(isset($tableroBarco2))
+                        <h6 class="m-0 font-weight-bold text-primary">Tablero de jugador: <b>{{$tableroBarco2->nombreUsuario}}</b></h6>
+                    @else
+                        <h6 class="m-0 font-weight-bold text-primary"><b>Sin Rival</b></h6>
+                    @endif
                 </div>
-                <div class="card-body">
-                    <button valorBarcoEnemigo="1" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-danger text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="2" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-dark text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="3" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="4" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="5" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="6" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="7" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="8" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="9" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="10" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="11" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
-                    <button valorBarcoEnemigo="12" class="barco btn-barco-enemigo px-2 py-3 bg-gradient-primary text-white">.bg-gradient-dark</button>
+                <div class="card-body text-center">
+                    @for($x = 1; $x <= 12; $x++)
+                        @if(isset($tableroBarco2))
+                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                        @else
+                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                        @endif
+                    @endfor
+                </div>
+
+            </div>
+            <!-- Link to open the modal -->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="buscar-rival" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <p class="text-center">Buscando Rival.</p>
+                    <img src="/img/cargando.gif">
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
@@ -80,29 +104,87 @@
 @endsection
 
 @section('js')
+
     <script>
         $(document).ready(function (){
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "get",
-                url: "{{route('usuario.peticion')}}",
-                dataType: 'json',
-                cache: false,
-                success: function (data) {
-                    console.log(data);
+            var idUsuario = $("#usuario-id").val();
+
+            // -- Verificar si el jugador ya tiene barcos
+            $("#buscar-enemigo").click( function (){
+                empezar();
+            });
+
+            var barcosDisponibles = 3;
+            var conjuntoBarcos = [];
+
+            $(".btn-barco").click(function (){
+                if($("#barcos-listos").val() == 1){
+                    return false;
+                }
+                if(barcosDisponibles > 0){
+                    if($(this).hasClass("bg-gradient-success")){
+                        return false;
+                    }
+                    if($.inArray($(this).attr('valorBarco'),conjuntoBarcos)){
+                        var idBarco = $(this).attr('valorBarco');
+                        conjuntoBarcos.push(idBarco);
+                        barcosDisponibles--;
+                        $("#cantidadBarcos").html(barcosDisponibles);
+                        $(this).addClass('bg-gradient-success');
+                    }
+                }else{
+                    alert("Ya no cuentas con barcos disponibles")
+                }
+
+            });
+
+            $("#jugador-1-listo").click(function (){
+                if(barcosDisponibles == 0){
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "get",
+                        url: "{{route('tablero.agregar.barcos')}}/{{$tablero->codigo}}/"+conjuntoBarcos,
+                        dataType: 'json',
+                        cache: false,
+                        success: function (data) {
+                            location.reload();
+                        }
+                    });
+                }else{
+                    alert("Aún tienes barcos disponibles");
                 }
             });
 
-            $(".btn-barco").click(function (){
-                var idBarco = $(this).attr('valorBarco');
-               //alert($(this).attr('valorBarco'));
-                if(idBarco == 12)
-                    alert(":D");
+            function empezar(){
+                $("#buscar-rival").modal('show');
+                buscarJugador();
+            }
 
-
-            });
+            function buscarJugador(){
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "get",
+                    url: "{{route('tablero.consultar.barcos')}}/{{$tablero->codigo}}",
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        console.log(data);
+                        var posicionesBarcos = data.posicionesBarcos;
+                        $.each( posicionesBarcos, function( key, value ) {
+                            if(value.usuario_id != idUsuario){
+                                location.reload();
+                            }else{
+                                $("#buscar-rival").modal('hide');
+                                //alert("Intenta buscar nuevamente");
+                            }
+                        });
+                    }
+                });
+            }
         });
     </script>
 @endsection

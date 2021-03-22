@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Herramienta;
 use App\Models\Tablero;
+use App\Models\Tablero_Barcos;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class TableroController extends Controller
@@ -90,8 +92,49 @@ class TableroController extends Controller
         if(!$tablero){
             return redirect()->route('usuario.menu');
         }
+        $tableroBarco = Tablero_Barcos::where('tablero_id',$tablero->id)->where("usuario_id",session('usuario')->id)->first();
+        $tableroBarco2 = Tablero_Barcos::where('tablero_id',$tablero->id)->where("usuario_id","!=",session('usuario')->id)->first();
+        if($tableroBarco2){
+            $usuario = Usuario::find($tableroBarco2->usuario_id);
+            $tableroBarco2->nombreUsuario = $usuario->correo;
+        }
 
-        return view("tablero",["tablero" => $tablero]);
+        return view("tablero",["tablero" => $tablero,"tableroBarco" => $tableroBarco, "tableroBarco2" => $tableroBarco2]);
+    }
 
+    public function agregarBarcos($codigo,$conjuntoBarcos){
+
+        $tablero = Tablero::where("codigo",$codigo)->first();
+        $ubicaciones = explode(",",$conjuntoBarcos);
+
+        $tableroBarco = Tablero_Barcos::where('tablero_id',$tablero->id)->where("usuario_id",session('usuario')->id)->first();
+        if(!$tableroBarco){
+            $tableroBarco = new Tablero_Barcos();
+            $tableroBarco->tablero_id = $tablero->id;
+            $tableroBarco->usuario_id = session('usuario')->id;
+            $tableroBarco->barco1 = $ubicaciones[0];
+            $tableroBarco->barco2 = $ubicaciones[1];
+            $tableroBarco->barco3 = $ubicaciones[2];
+            $tableroBarco->save();
+
+            $varificarEstatus = Tablero_Barcos::where('tablero_id',$tablero->id)->count();
+            if($varificarEstatus < 2)
+                $tablero->estatus = "activo";
+            else
+                $tablero->estatus = "jugando";
+
+            $tablero->save();
+            echo json_encode(["estatus" => "succes","mensaje" => "Barcos guardados correctamente"]);
+        }
+    }
+
+    public function buscarBarcosTablero ($codigo){
+        $tablero = Tablero::where("codigo",$codigo)->first();
+        if(!$tablero)
+            return json_encode(["estatus" => "error","mensaje" => "No fue posible encontrar el tablero"]);
+
+        $posicionesBarcos = Tablero_Barcos::where('tablero_id',$tablero->id)->get();
+
+        return json_encode(["tablero" => $tablero, "posicionesBarcos" => $posicionesBarcos]);
     }
 }
