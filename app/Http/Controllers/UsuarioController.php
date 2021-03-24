@@ -168,7 +168,9 @@ class UsuarioController extends Controller
         $tableros = Tablero::where("estatus","nuevo")->orWhere('estatus','activo')->get();
         foreach ($tableros as $tablero){
             $usuario1 = Usuario::find($tablero->usuario1_id);
-            $tablero->correoUsuario1 = $usuario1->correo;
+            if($usuario1){
+                $tablero->correoUsuario1 = $usuario1->correo;
+            }
         }
         return view("tableros",["tableros" => $tableros]);
     }

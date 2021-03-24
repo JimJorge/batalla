@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Herramienta;
 use App\Models\Tablero;
 use App\Models\Tablero_Barcos;
+use App\Models\Tablero_Movimiento;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 
@@ -98,8 +99,52 @@ class TableroController extends Controller
             $usuario = Usuario::find($tableroBarco2->usuario_id);
             $tableroBarco2->nombreUsuario = $usuario->correo;
         }
+        $jugador1 = Usuario::find($tablero->usuario1_id);
+        $jugador2 = Usuario::find($tablero->usuario2_id);
+        $ultimoTiro = Tablero_Movimiento::where("tablero_id",$tablero->id)->orderBy("created_at",'desc')->first();
 
-        return view("tablero",["tablero" => $tablero,"tableroBarco" => $tableroBarco, "tableroBarco2" => $tableroBarco2]);
+        if($ultimoTiro){
+            if($ultimoTiro->usuario_id == $jugador1->id){
+                $nombreJugador = $jugador2->correo;
+            }else{
+                $nombreJugador = $jugador1->correo;
+            }
+        }else{
+            $nombreJugador = $jugador1->correo;
+        }
+
+        // -- Barcos undidos
+        $datosJugador1 = [];
+        $movimientosJugador1 = Tablero_Movimiento::where('tablero_id',$tablero->id)->where('usuario_id',$jugador1->id)->get();
+        $movimientosJugador2 = Tablero_Movimiento::where('tablero_id',$tablero->id)->where('usuario_id',$jugador2->id)->get();
+        $tirosFallados = [];
+        $tirosHundidos = [];
+        foreach ( $movimientosJugador1 as $movimiento) {
+
+            if($movimiento->estatus == 1)
+                array_push($tirosHundidos,$movimiento->posicion);
+            else
+                array_push($tirosFallados,$movimiento->posicion);
+        }
+        $informacionJugador1 = array(
+            "tirosFallados" => $tirosFallados,
+            "tirosHundidos" => $tirosHundidos
+        );
+        $tirosFallados = [];
+        $tirosHundidos = [];
+        foreach ( $movimientosJugador2 as $movimiento) {
+
+            if($movimiento->estatus == 1)
+                array_push($tirosHundidos,$movimiento->posicion);
+            else
+                array_push($tirosFallados,$movimiento->posicion);
+        }
+        $informacionJugador2 = array(
+            "tirosFallados" => $tirosFallados,
+            "tirosHundidos" => $tirosHundidos,
+        );
+
+        return view("tablero",["tablero" => $tablero,"tableroBarco" => $tableroBarco, "tableroBarco2" => $tableroBarco2,"nombreTirador" => $nombreJugador,"informacionJugador1" => $informacionJugador1,"informacionJugador2" => $informacionJugador2]);
     }
 
     public function agregarBarcos($codigo,$conjuntoBarcos){
@@ -122,7 +167,9 @@ class TableroController extends Controller
                 $tablero->estatus = "activo";
             else
                 $tablero->estatus = "jugando";
-
+            if(session('usuario')->id != $tablero->usuario1_id){
+                $tablero->usuario2_id = session('usuario')->id;
+            }
             $tablero->save();
             echo json_encode(["estatus" => "succes","mensaje" => "Barcos guardados correctamente"]);
         }
@@ -136,5 +183,50 @@ class TableroController extends Controller
         $posicionesBarcos = Tablero_Barcos::where('tablero_id',$tablero->id)->get();
 
         return json_encode(["tablero" => $tablero, "posicionesBarcos" => $posicionesBarcos]);
+    }
+
+    public function tirar ($codigo,$posicion){
+        $tablero = Tablero::where("codigo",$codigo)->first();
+        if(!$tablero)
+            return json_encode(["error" => "no se encontro el tablero"]);
+
+        $ultimoTiro = Tablero_Movimiento::where("tablero_id",$tablero->id)->orderBy("created_at",'desc')->first();
+        if(!$ultimoTiro){
+            if(session('usuario')->id == $tablero->usuario1_id){
+                $barcosEnemigos = Tablero_Barcos::where('tablero_id',$tablero->id)->where("usuario_id","!=",session('usuario')->id)->first();
+                $nuevoMovimiento = new Tablero_Movimiento();
+                $nuevoMovimiento->tablero_id = $tablero->id;
+                $nuevoMovimiento->usuario_id = session('usuario')->id;
+                $nuevoMovimiento->posicion = $posicion;
+                if($posicion == $barcosEnemigos->barco1 || $posicion == $barcosEnemigos->barco2 || $posicion == $barcosEnemigos->barco3){
+                    $nuevoMovimiento->estatus = 1;
+                }else{
+                    $nuevoMovimiento->estatus = 0;
+                }
+                $nuevoMovimiento->save();
+
+                return json_encode(["estatus" => "success","mensaje" => $nuevoMovimiento->estatus == 1? "¡BARCO HUNDIDO!": "¡FALLASTE!" ]);
+            }else{
+                return json_encode(["estatus" =>"error","mensaje" => "Aún no es tu turno"]);
+            }
+        }else{
+            if($ultimoTiro->usuario_id == session('usuario')->id){
+                return json_encode(["estatus" =>"error","mensaje" => "Aún no es tu turno"]);
+            }else{
+                $barcosEnemigos = Tablero_Barcos::where('tablero_id',$tablero->id)->where("usuario_id","!=",session('usuario')->id)->first();
+                $nuevoMovimiento = new Tablero_Movimiento();
+                $nuevoMovimiento->tablero_id = $tablero->id;
+                $nuevoMovimiento->usuario_id = session('usuario')->id;
+                $nuevoMovimiento->posicion = $posicion;
+                if($posicion == $barcosEnemigos->barco1 || $posicion == $barcosEnemigos->barco2 || $posicion == $barcosEnemigos->barco3){
+                    $nuevoMovimiento->estatus = 1;
+                }else{
+                    $nuevoMovimiento->estatus = 0;
+                }
+                $nuevoMovimiento->save();
+                return json_encode(["estatus" => "success","mensaje" => $nuevoMovimiento->estatus == 1? "¡BARCO HUNDIDO!": "¡FALLASTE!" ]);
+            }
+        }
+
     }
 }

@@ -17,7 +17,9 @@
     Creado: {{$tablero->created_at}}
     <p class="mb-4">Instrucciones de juego
     </p>
-
+    @if($tablero->estatus == "jugando")
+        <h3 class="text-center text-info"><b>Turno del jugador: {{$nombreTirador}}</b></h3>
+    @endif
     <!-- Content Row -->
     <div class="row">
         <input type="hidden" id="usuario-id" value="{{session('usuario')->id}}">
@@ -39,10 +41,18 @@
                     @for($x = 1; $x <= 12; $x++)
                         @if(isset($tableroBarco))
                             @if($tableroBarco->barco1 == $x || $tableroBarco->barco2 == $x || $tableroBarco->barco3 == $x)
-                                <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-success text-white">Barco {{$x}}</button>
+                                @php $estatus = "bg-gradient-success" @endphp
                             @else
-                                <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                                @php $estatus = "bg-gradient-primary" @endphp
                             @endif
+                            @if(in_array($x,$informacionJugador1["tirosFallados"]))
+                                @php $estatus = "bg-gradient-info" @endphp
+                            @endif
+                            @if(in_array($x,$informacionJugador1["tirosHundidos"]))
+                                @php $estatus = "bg-gradient-danger" @endphp
+                            @endif
+                                <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 {{$estatus}} text-white">Barco {{$x}}</button>
+
                         @else
                             <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
                         @endif
@@ -72,9 +82,18 @@
                 <div class="card-body text-center">
                     @for($x = 1; $x <= 12; $x++)
                         @if(isset($tableroBarco2))
-                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
-                        @else
-                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 bg-gradient-primary text-white">Barco {{$x}}</button>
+                            @if($tableroBarco2->barco1 == $x || $tableroBarco2->barco2 == $x || $tableroBarco2->barco3 == $x)
+
+                            @else
+                                @php $estatus = "bg-gradient-primary" @endphp
+                            @endif
+                            @if(in_array($x,$informacionJugador1["tirosFallados"]))
+                                @php $estatus = "bg-gradient-info" @endphp
+                            @endif
+                            @if(in_array($x,$informacionJugador1["tirosHundidos"]))
+                                @php $estatus = "bg-gradient-danger" @endphp
+                            @endif
+                            <button valorBarco="{{$x}}" class="barco btn-barco px-2 py-3 {{$estatus}} text-white">Barco {{$x}}</button>
                         @endif
                     @endfor
                 </div>
@@ -116,8 +135,13 @@
 
             var barcosDisponibles = 3;
             var conjuntoBarcos = [];
+            var estatusTablero = "{{$tablero->estatus}}";
 
             $(".btn-barco").click(function (){
+                var idBarco = $(this).attr('valorBarco');
+                if(estatusTablero == "jugando"){
+                    tirar(idBarco);
+                }
                 if($("#barcos-listos").val() == 1){
                     return false;
                 }
@@ -125,14 +149,13 @@
                     if($(this).hasClass("bg-gradient-success")){
                         return false;
                     }
-                    if($.inArray($(this).attr('valorBarco'),conjuntoBarcos)){
-                        var idBarco = $(this).attr('valorBarco');
+                    if($.inArray(idBarco,conjuntoBarcos)){
                         conjuntoBarcos.push(idBarco);
                         barcosDisponibles--;
                         $("#cantidadBarcos").html(barcosDisponibles);
                         $(this).addClass('bg-gradient-success');
                     }
-                }else{
+                }else {
                     alert("Ya no cuentas con barcos disponibles")
                 }
 
@@ -182,6 +205,28 @@
                                 //alert("Intenta buscar nuevamente");
                             }
                         });
+                    }
+                });
+            }
+
+            function tirar(idBarco){
+                var posicion = idBarco;
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    type: "get",
+                    url: "{{route('tablero.tirar.barco')}}/{{$tablero->codigo}}/"+posicion,
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        if(data.estatus == "success"){
+                            alert(data.mensaje);
+                            location.reload();
+                        }else{
+                            alert(data.mensaje);
+                            location.reload();
+                        }
                     }
                 });
             }

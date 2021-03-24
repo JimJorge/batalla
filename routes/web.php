@@ -39,7 +39,7 @@ Route::prefix('/usuario')->middleware("VerificarUsuario")->group(function (){
     Route::get('/historial',[UsuarioController::class,'historial'])->name('usuario.historial');
     Route::get('/agregar/barcos/tablero/{codigo?}/{conjuntoBarcos?}',[TableroController::class,'agregarBarcos'])->name('tablero.agregar.barcos');
     Route::get('/consultar/barcos/tablero/{codigo?}',[TableroController::class,'buscarBarcosTablero'])->name('tablero.consultar.barcos');
-
+    Route::get('/tablero/tirar/posicion/{tablero?}/{posicion?}',[TableroController::class,'tirar'])->name('tablero.tirar.barco');
 });
 
 
